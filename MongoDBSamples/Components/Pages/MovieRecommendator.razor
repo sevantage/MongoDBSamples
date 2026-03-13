@@ -1,0 +1,94 @@
+﻿@page "/movie-recommendator/{key}"
+@using Microsoft.Agents.AI
+@using Microsoft.Extensions.AI
+@using Microsoft.Extensions.VectorData
+@using Microsoft.SemanticKernel.Connectors.MongoDB
+@using MongoDB.Driver
+@using OpenAI.Embeddings
+@using MongoDBSamples.Services
+@using System.Security.AccessControl
+@rendermode InteractiveServer
+@inject IServiceProvider ServiceProvider
+
+<PageTitle>Movie recommendation agent - @RecommendationService.Name</PageTitle>
+
+<h1>Welcome to your movie recommendation agent</h1>
+<h2>Implementation: @RecommendationService.Name</h2>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <Chat Messages="RecommendationService.GetChatHistory()" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            @if (isLoading)
+            {
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+            else
+            {
+                <div class="input-group mb-3">
+                    <input @bind="userInput" @bind:event="oninput" placeholder="Type your message here..."
+                           class="form-control" @onkeydown="HandleKeyDown" @ref="inputRef" />
+                    <button @onclick="SendMessage" class="btn btn-primary">Send</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public required string key { get; set; }
+    [Inject(Key = "mongodb-vector-store-connector")]
+    public required IMovieRecommendationService RecommendationService { get; set; }    
+    private string userInput { get; set; } = string.Empty;
+    private bool isLoading { get; set; } = false;
+    private ElementReference inputRef;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        RecommendationService = ServiceProvider.GetRequiredKeyedService<IMovieRecommendationService>(key);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await inputRef.FocusAsync();
+        }
+    }
+
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(userInput))
+        {
+            isLoading = true;
+            StateHasChanged();
+            try
+            {
+                AgentResponse response = await RecommendationService.RecommendAsync(userInput, CancellationToken.None);
+                userInput = string.Empty;
+            }
+            finally
+            {
+                isLoading = false;
+                StateHasChanged();
+                await inputRef.FocusAsync();
+            }
+        }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !isLoading)
+        {
+            await SendMessage();
+        }
+    }
+}

@@ -1,0 +1,13 @@
+﻿@using Markdig
+@using Microsoft.Extensions.AI
+<ul>
+    @foreach (ChatMessage message in Messages)
+    {
+        <li class="@message.Role">@((MarkupString)Markdown.ToHtml(message.Text))</li>
+    }
+</ul>
+
+@code {
+    [Parameter]
+    public IReadOnlyList<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
+}

@@ -1,0 +1,61 @@
+@page "/movies/{id}"
+@using MongoDBSamples
+@using MongoDBSamples.Services
+@inject NavigationManager Navigation
+@inject MovieRepository MovieRepos
+
+@if (movie == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="movie-title">
+                <h1>@movie.Title</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="plot">
+                <h3>Plot</h3>
+                <p>@movie.FullPlot</p>
+                <p><strong>ID:</strong> @movie.Id</p>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="cast">
+                <h3>Genres</h3>
+                <ul>
+                    @foreach (string genre in movie.Genres)
+                    {
+                        <li>@genre</li>
+                    }   
+                </ul>
+            </div>
+            <div class="cast">
+                <h3>Cast</h3>
+                <ul>
+                    @foreach (string cast in movie.Cast)
+                    {
+                        <li>@cast</li>
+                    }   
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public required string id { get; set; }
+    
+    private Movie? movie;
+
+    protected override async Task OnInitializedAsync()
+    {
+        movie = await MovieRepos.GetMovieByIdAsync(id);
+    }
+}

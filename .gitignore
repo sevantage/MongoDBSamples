@@ -1,0 +1,61 @@
+# Blazor/.NET gitignore
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# IIS Express
+.vs/
+
+# Publish results
+wwwroot/dist/
+wwwroot/node_modules/
+
+# NPM Packages
+node_modules/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Rider
+.idea/
+*.sln.iml
+
+# Blazor WebAssembly
+wwwroot/_framework/
+wwwroot/service-worker-assets.js
+
+# Static web assets
+**/scopedcss/bundle/
+**/scopedcss/projectbundle/
+**/scopedcss/Components/
+**/staticwebassets/
+**/staticwebassets.build.json
+**/staticwebassets.development.json
+**/staticwebassets.build.endpoints.json
+**/staticwebassets.development.endpoints.json
+**/staticwebassets.runtime.json
+**/staticwebassets.endpoints.json
+
+# Others
+*.dbmdl
+*.bak
+*.backup
+*.mdf
+*.ldf
+*.ndf

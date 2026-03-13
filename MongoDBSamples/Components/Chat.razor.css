@@ -1,0 +1,30 @@
+/* Chat.razor.css - Styles for the Chat component */
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: #e0f4f1;
+}
+
+.user {
+    margin-left: 80px;
+    background: white;
+    border: 2px solid #023402;
+    color: #023430;
+}
+
+.assistant {
+    margin-right: 80px;
+    background: #00684a;
+    color: #e0f4f1;
+}
+
+.assistant a, .assistant a:link, .assistant a:visited {
+    color: #00ed64 !important;
+}
