@@ -44,15 +44,7 @@ public abstract class MovieRecommendationServiceBase<T> : IMovieRecommendationSe
                     Be fun to interact with, but keep your answers short. Answer in markdown. 
                     """,
                 },
-                AIContextProviderFactory = (ctx, _) =>
-                    ValueTask.FromResult<AIContextProvider>(
-                        new TextSearchProvider(
-                            RetrieveContextAsync,
-                            ctx.SerializedState,
-                            ctx.JsonSerializerOptions,
-                            textSearchOptions
-                        )
-                    ),
+                AIContextProviders = [new TextSearchProvider(RetrieveContextAsync, textSearchOptions)]
             }
         );
     }
