@@ -11,4 +11,4 @@ This project demonstrates practical approaches for building Retrieval-Augmented 
 
 ## Notes
 
-The samples focus on experimentation and learning, and can be adapted as a starting point for production-ready AI applications.
+The sample is focused on experimentation and learning, and can be adapted as a starting point for production-ready AI applications.
